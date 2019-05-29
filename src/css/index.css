@@ -86,7 +86,7 @@ input {
 }
 
 .photo-container li:hover img {
-  transform: scale(1.65);
+  transform: scale(1.45);
 }
 
 .photo-container .not-found {
@@ -117,7 +117,7 @@ input {
     display: flex;
     justify-content: center;
   }
-  
+
   .main-nav li {
     margin: 10px;
     width: 100px;
