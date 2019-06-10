@@ -5,10 +5,8 @@ import axios from 'axios';
 import './css/index.css';
 import apiKey from './config.js';
 import Header from './components/Header.js';
-import Nav from './components/Nav.js';
 import Gallery from './components/Gallery.js';
 import SearchForm from './components/SearchForm.js';
-import NoImages from './components/NoImages.js';
 import NotFound from './components/NotFound.js';
 
 
@@ -36,12 +34,14 @@ export default class App extends Component {
   }
 
   performSearch = (query) => {
+    this.setState({loading: true});
+    console.log(this.state.loading)
     axios.get(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=${query}&per_page=24&format=json&nojsoncallback=1`)
       .then(response => {
         if (this._isMounted) {
           if (query === 'mountains') {
             this.setState({ mountains : response.data.photos.photo,
-                            isLoading : false })
+                            loading : false })
           } else if (query === 'lakes'){
             this.setState({ lakes: response.data.photos.photo,
                             loading: false})
@@ -71,11 +71,11 @@ export default class App extends Component {
                 render={props =>
                 <SearchForm {...props} onSearch={this.performSearch} /> } />
                   <Switch>
-                    <Route exact path="/" render={ () => (this.state.loading) ? <p>Loading...</p> : <Redirect to="mountains" /> } />
-                    <Route exact path="/search/:query" render={ ({ match }) => <Gallery data={this.state.pics} /> } />
-                    <Route exact path="/mountains" render={ () => (this.state.loading) ? <p>Loading...</p> : <Gallery data={this.state.mountains} query="mountains" /> } />
-                    <Route exact path="/lakes" render={ () => (this.state.loading) ? <p>Loading...</p> : <Gallery data={this.state.lakes} query="lakes" /> } />
-                    <Route exact path="/canyons" render={ () => (this.state.loading) ? <p>Loading...</p> : <Gallery data={this.state.canyons} query="canyons" /> } />
+                    <Route exact path="/" render={ () => <Redirect to="mountains" /> } />
+                    <Route exact path="/search/:query" render={ ({ match }) => (this.state.loading) ? <p>Loading...</p> : <Gallery data={this.state.pics} /> } />
+                    <Route exact path="/mountains" render={ () => <Gallery data={this.state.mountains} query="mountains" /> } />
+                    <Route exact path="/lakes" render={ () => <Gallery data={this.state.lakes} query="lakes" /> } />
+                    <Route exact path="/canyons" render={ () => <Gallery data={this.state.canyons} query="canyons" /> } />
                     <Route component={ NotFound } />
                   </Switch>
             </div>

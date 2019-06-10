@@ -17,7 +17,7 @@ const Gallery = (props) => {
 // Renders the collection of images to the DOM
 return (
   <div className="photo-container">
-    <h2>Results</h2>
+    <h2>{(props.loading) ? "Loading..." : "Results"}</h2>
     <ul>
       { images }
     </ul>
